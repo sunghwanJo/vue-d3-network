@@ -361,8 +361,14 @@ export default {
     nodeClick (event, node) {
       this.$emit('node-click', event, node)
     },
+    nodeOver (event, node) {
+      this.$emit('node-over', event, node)
+    },
     linkClick (event, link) {
       this.$emit('link-click', event, link)
+    },
+    linkOver (event, node) {
+      this.$emit('link-over', event, node)
     },
     setMouseOffset (event, node) {
       let x = 0

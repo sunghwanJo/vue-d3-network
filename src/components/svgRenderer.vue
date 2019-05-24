@@ -11,17 +11,24 @@
     @touchstart.passive=''
     )
 
+    defs
+      marker#arrow(markerWidth='10', markerHeight='10', refX='0', refY='3', orient='auto', markerUnits='strokeWidth', viewBox='0 0 20 20')
+        path(d='M0,0 L0,6 L9,3 z', fill='#f00')
+
     //-> links
     g.links#l-links
-        path(v-for="link in links"
+      path(v-for="link in links"
           :d="linkPath(link)"
           :id="link.id"
           @click='emit("linkClick",[$event,link])'
           @touchstart.passive='emit("linkClick",[$event,link])'
+          @mouseover.passive='emit("linkOver", [$event,link])'
           v-bind='linkAttrs(link)'
           :class='linkClass(link.id)'
           :style='linkStyle(link)'
+          marker-end='url(#arrow)'
           )
+        <!--animate(attributename='d', from='m 10 10 l200,0', to='m 10 10 l400,0', dur='1s', repeatcount='indefinite')-->
 
     //- -> nodes
     g.nodes#l-nodes(v-if='!noNodes')
@@ -33,6 +40,7 @@
           :height='getNodeSize(node, "height")'
           @click='emit("nodeClick",[$event,node])'
           @touchend.passive='emit("nodeClick",[$event,node])'
+          @mouseover.passive='emit("nodeOver", [$event,node])'
           @mousedown.prevent='emit("dragStart",[$event,key])'
           @touchstart.prevent='emit("dragStart",[$event,key])'
           :x='node.x - getNodeSize(node, "width") / 2'
@@ -50,6 +58,7 @@
         :r="getNodeSize(node) / 2"
         @click='emit("nodeClick",[$event,node])'
         @touchend.passive='emit("nodeClick",[$event,node])'
+        @mouseover.passive='emit("nodeOver", [$event,node])'
         @mousedown.prevent='emit("dragStart",[$event,key])'
         @touchstart.prevent='emit("dragStart",[$event,key])'
         :cx="node.x"
